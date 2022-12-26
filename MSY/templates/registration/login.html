@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'js/login.js' %}">
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{% static 'css/skilline.css' %}" />
+    <!-- Poppins font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+        integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="bg-gray-900 border-t border-gray-400 shadow">
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div
+            class="bg-gray/20 absolute top-0 left-0 bg-gradient-to-b from-black/30 via-gray/80 to-black/60 bottom-0 leading-5 h-full w-full overflow-hidden">
+        </div>
+        <div class="relative  min-h-screen  sm:flex sm:flex-row  justify-center bg-transparent rounded-3xl shadow-2xl ">
+            <div data-aos="fade-right" class="flex-col flex  self-center lg:px-14 sm:max-w-4xl xl:max-w-md  z-10">
+                <div class="self-start hidden lg:flex flex-col  text-gray-300">
+                    <div class="absolute inset-0 mx-auto text-center relative">
+                        <div >
+                            <h1 class="font-bold text-xl pr-5 relative z-50">ZaVin</h1>
+                            <svg class="w-11 h-11 absolute -top-2 -left-3 z-40" viewBox="0 0 79 79" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M35.9645 2.94975C37.9171 0.997129 41.0829 0.997127 43.0355 2.94975L76.0502 35.9645C78.0029 37.9171 78.0029 41.0829 76.0503 43.0355L43.0355 76.0502C41.0829 78.0029 37.9171 78.0029 35.9645 76.0503L2.94975 43.0355C0.997129 41.0829 0.997127 37.9171 2.94975 35.9645L35.9645 2.94975Z"
+                                    stroke="#26C1F2" stroke-width="8" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="my-3  font-semibold text-4xl">Login Halaman Admin</h1>
+                    <p class="pr-3 text-sm opacity-75">Silahkan Masukan Username Dan Password Admin Anda untuk dapat
+                        mengakses Halaman Admin</p>
+                </div>
+            </div>
+            <div data-aos="fade-left" class="flex floating justify-center self-center  z-10">
+                <div class="p-12 bg-black/30 mx-auto rounded-3xl w-96 ">
+                    <div class="mb-7">
+                        <h3 class="text-2xl text-white">Silahkan Login Dahulu</h3>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="">
+
+                            <input
+                                class=" w-full text-sm  px-4 py-3 bg-black/10 focus:bg-black/10 border  border-white-200 rounded-lg focus:outline-none focus:border-blue-400"
+                                type="text" name="nama" placeholder="Your Name" required>
+                        </div>
+                        <div class="">
+                            <input
+                                class=" w-full text-sm  px-4 py-3 bg-black/10 focus:bg-black/10 border  border-white-200 rounded-lg focus:outline-none focus:border-blue-400"
+                                type="text" id="username" name="username" placeholder="Username" required>
+                        </div>
+
+                        <div class="relative" x-data="{ show: true }">
+                            <input placeholder="Password" :type="show ? 'password' : 'text'" name="password"
+                                id="password"
+                                class="text-sm text-black-100 px-4 py-3 rounded-lg w-full bg-black/10 focus:bg-black/10 border border-white-200 focus:outline-none focus:border-blue-400">
+                            <div class="flex items-center absolute inset-y-0 right-0 mr-3  text-sm leading-5">
+
+                                <svg @click="show = !show" :class="{'hidden': !show, 'block':show }"
+                                    class="h-4 text-white/30" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    viewbox="0 0 576 512">
+                                    <path fill="currentColor"
+                                        d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z">
+                                    </path>
+                                </svg>
+                                <svg @click="show = !show" :class="{'block': !show, 'hidden':show }"
+                                    class="h-4 text-white/30" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    viewbox="0 0 640 512">
+                                    <path fill="currentColor"
+                                        d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z">
+                                    </path>
+                                </svg>
+
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <button type="submit"
+                                class="w-full flex justify-center bg-black/40  hover:bg-black/50 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                                <input type="submit" value="Sign in">
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                class="w-full flex justify-center bg-black/40  hover:bg-black/50 text-gray-100 p-3  rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-500">
+                                <a href="{% url 'user' %}">
+                                    Back To User Site
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    <footer class=" bg-gray-900 border-t border-gray-400 shadow">
+        <div class="max-w-lg mx-auto">
+            <div class="flex py-12 justify-center text-white items-center px-20 sm:px-36">
+                <div class=" ml-10 relative">
+                    <h1 class="font-bold text-xl pr-5 relative z-50">ZaVin </h1>
+                    
+                    <svg class="w-11 h-11 absolute -top-2 -left-3 z-40" viewBox="0 0 79 79" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M35.9645 2.94975C37.9171 0.997129 41.0829 0.997127 43.0355 2.94975L76.0502 35.9645C78.0029 37.9171 78.0029 41.0829 76.0503 43.0355L43.0355 76.0502C41.0829 78.0029 37.9171 78.0029 35.9645 76.0503L2.94975 43.0355C0.997129 41.0829 0.997127 37.9171 2.94975 35.9645L35.9645 2.94975Z"
+                            stroke="#26C1F2" stroke-width="8" />
+                    </svg>
+                </div>
+                <span class="border-l border-gray-500 text-sm pl-5 py-2 font-semibold">Penyaji Data Terkait MSY</span>
+            </div>
+            <center>
+                <i class="ml-4 fas fa-moon text-blue-400 pr-3"></i>
+                <p class="text-gray-400">Author Social Media</p>
+            </center>
+            <div class="flex items-center text-gray-400 text-sm justify-center">
+                <a href="https://instagram.com/nevin.adr" class="pr-3">Instagram</a>
+                <a href="https://www.twitter.com/nevin_adr" class="border-l border-gray-400 px-3">Twitter</a>
+                <a href="https://www.facebook.com/nevin.adel.1/" class="border-l border-gray-400 pl-3">Facebook</a>
+            </div>
+            <div class="text-center text-white">
+                <p class="my-3 text-gray-400 text-sm">&copy; 2022 Copyright UPI. </p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+
+</html>

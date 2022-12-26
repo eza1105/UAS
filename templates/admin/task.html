@@ -1,0 +1,127 @@
+{% extends 'admin.html' %}
+{% load static %}
+{% block content%} 
+
+
+
+<div class="container mt-10 w-full mx-auto pb-8">
+    <div class="w-full p-3">
+        <!--Table Card-->
+        <div class="bg-gray-900 border border-gray-800 rounded shadow">
+            <div class="border-b border-gray-800 p-3">
+                <h5 class="font-bold uppercase text-white text-xl">TABLE HASIL TANGKAPAN IKAN <br><br> <a href="{% url 'add_data'%}" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Add Data</a></h5>
+            </div>
+            <div class="p-5">
+                <table class="font-bold uppercase text-white text-center w-full p-5 text-white ">
+                    <thead class="border  border-2 border-gray-800 ">
+                        <tr class="[&>*]:py-4">
+                            <th data-aos="fade-right"   class=" ">Jenis Usaha</th>
+                            <th data-aos="fade-up"   class=" ">Provinsi</th>
+                            <th data-aos="fade-left" class=" ">Jenis Ikan</th>
+                            <th data-aos="fade-down" class=" ">Tahun</th>
+                            <th data-aos="fade-right"class=" ">Trip</th>
+                            <th data-aos="fade-down" class=" ">Ton</th>
+                            <th data-aos="fade-left" class=" ">actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="">
+                    {% for obj in datamsy %}
+                        <tr class="">
+                            <td data-aos="fade-up"   class=" " >{{obj.jenis_usaha}}</td>
+                            <td data-aos="fade-down" class=" " >{{obj.provinsi}}</td>
+                            <td data-aos="fade-right"class=" " >{{obj.jenis_ikan}}</td>
+                            <td data-aos="fade-left" class=" " >{{obj.tahun}}</td>
+                            <td data-aos="fade-up"   class=" " >{{obj.trip}}</td>
+                            <td data-aos="fade-down" class=" " >{{obj.ton}}</td>
+                            <td data-aos="fade-right"class=" ">
+                                <a href="{% url 'up_data' obj.pk %}" class="inline-block px-6 py-2.5 bg-blue-400  font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out">Edit</a> ||
+                                <a href="#" class="inline-block px-6 py-2.5 bg-red-600  font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out" onclick="hapus_data('{{obj.pk}}', '{{obj.jenis_usaha}}', '{{obj.provinsi}}', '{{obj.jenis_ikan}}')">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                        </tbody>
+                </table>
+              
+                
+                <script>
+                    function hapus_data(pk, usaha, provinsi, ikan){
+                        swal({
+                            title: "Are you sure?",
+                            text: `want to delete  ${usaha} ${provinsi} ${ikan} ? it's can not be recovery !`,
+                            icon: "warning",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                swal("Success!", "Delete Success!", "success");
+                                window.location= "/adm/deldata/"+pk;
+                                }
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+        <!--/table Card-->
+    </div>
+</div>
+<script>
+
+
+    /*Toggle dropdown list*/
+    /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
+    
+    var userMenuDiv = document.getElementById("userMenu");
+    var userMenu = document.getElementById("userButton");
+    
+    var navMenuDiv = document.getElementById("nav-content");
+    var navMenu = document.getElementById("nav-toggle");
+    
+    document.onclick = check;
+    
+    function check(e){
+      var target = (e && e.target) || (event && event.srcElement);
+    
+      //User Menu
+      if (!checkParent(target, userMenuDiv)) {
+        // click NOT on the menu
+        if (checkParent(target, userMenu)) {
+          // click on the link
+          if (userMenuDiv.classList.contains("invisible")) {
+            userMenuDiv.classList.remove("invisible");
+          } else {userMenuDiv.classList.add("invisible");}
+        } else {
+          // click both outside link and outside menu, hide menu
+          userMenuDiv.classList.add("invisible");
+        }
+      }
+      
+      //Nav Menu
+      if (!checkParent(target, navMenuDiv)) {
+        // click NOT on the menu
+        if (checkParent(target, navMenu)) {
+          // click on the link
+          if (navMenuDiv.classList.contains("hidden")) {
+            navMenuDiv.classList.remove("hidden");
+          } else {navMenuDiv.classList.add("hidden");}
+        } else {
+          // click both outside link and outside menu, hide menu
+          navMenuDiv.classList.add("hidden");
+        }
+      }
+      
+    }
+    
+    function checkParent(t, elm) {
+      while(t.parentNode) {
+        if( t == elm ) {return true;}
+        t = t.parentNode;
+      }
+      return false;
+    }
+    
+    
+    </script>
+
+{% endblock %}

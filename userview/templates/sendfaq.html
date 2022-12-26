@@ -1,0 +1,9 @@
+
+{% block content%}
+
+   <form  action="{% url 'FAX'%}" class="text-white" method="POST" enctype="multipart/form-data">
+       {% csrf_token %}
+       {{ form.as_p }}
+       <button type="submit">Send Fax</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
+        integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'js/login.js' %}">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        .bg-black-alt {
+            background: #191919;
+        }
+
+        .text-black-alt {
+            color: #191919;
+        }
+
+        .border-black-alt {
+            border-color: #191919;
+        }
+    </style>
+
+    <!-- include leaflet.js and leaflet.css files -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Include Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <!-- Include GeoJSON JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/geojson/3.1.0/geojson.min.js"></script>
+
+    <script src="{% static 'json/Suhu.js' %}"> </script>
+    <script src="{% static 'json/chlorophylll.js' %}"> </script>
+
+    <title>ZaVin</title>
+    <link rel="stylesheet" href="{% static 'css/stylemap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/button.css' %}">
+</head>
+
+<body class="bg-black-alt font-sans leading-normal tracking-normal">
+    
+    <nav id="header" class="bg-gray-900  w-full z-10 shadow">
+
+
+        <div class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0">
+            <div data-aos="fade-down" class="relative w-1/2 pl-2 md:pl-0">
+                <a href="{% url 'user'%}"
+                    class="text-lg relative z-50  font-bold tracking-widest text-white rounded-lg focus:outline-none focus:shadow-outline">ZaVin</a>
+                <svg class="h-11 z-40 absolute -top-2 -left-3" viewBox="0 0 79 79" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M35.2574 2.24264C37.6005 -0.100501 41.3995 -0.100505 43.7426 2.24264L76.7574 35.2574C79.1005 37.6005 79.1005 41.3995 76.7574 43.7426L43.7426 76.7574C41.3995 79.1005 37.6005 79.1005 35.2574 76.7574L2.24264 43.7426C-0.100501 41.3995 -0.100505 37.6005 2.24264 35.2574L35.2574 2.24264Z"
+                        fill="#65DAFF" />
+                </svg>
+            </div>
+            <!-- <div class="w-1/2 pl-2 md:pl-0">
+                <a class="text-gray-100 text-base xl:text-xl no-underline hover:no-underline font-bold" href="#">
+                    <i class="fas fa-moon text-blue-400 pr-3"></i> Admin
+                </a>
+            </div> -->
+            <div class="w-1/2 pr-0">
+                <div class="flex relative inline-block float-right">
+
+                    <div data-aos="fade-right" data-aos-once="true" class=" relative text-sm text-gray-100">
+                        <button id="userButton" class="flex items-center focus:outline-none mr-3">
+                            <img class="w-8 h-8 rounded-full mr-4" src="http://i.pravatar.cc/300" alt="Avatar of User">
+                            <span class="hidden md:inline-block text-gray-100">Reza Nevin</span>
+                            <svg class="pl-2 h-2 fill-current text-gray-100" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+                                <g>
+                                    <path
+                                        d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z" />
+                                </g>
+                            </svg>
+                        </button>
+                        <div id="userMenu"
+                            class="bg-gray-900 rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
+                            <ul class="list-reset">
+                                <li><a href="#"
+                                        class="px-4 py-2 block text-gray-100 hover:bg-gray-800 no-underline hover:no-underline">admin</a>
+                                        <hr class="border-t mx-2 border-gray-400">
+                                </li>
+                                <li><a href="{% url 'logout'%}"
+                                        class="px-4 py-2 block text-gray-100 hover:bg-gray-800 no-underline hover:no-underline">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="block lg:hidden pr-4">
+                        <button id="nav-toggle"
+                            class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-100 hover:border-teal-500 appearance-none focus:outline-none">
+                            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <title>Menu</title>
+                                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-gray-900 z-20"
+                id="nav-content">
+                <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
+                    <li data-aos="fade-right" data-aos-once="true" class="mr-6 my-2 md:my-0">
+                        <a href="{% url 'adm'%}"
+                            class="block py-1 md:py-3 pl-1 align-middle text-gray-400 no-underline hover:text-gray-100 border-b-2 border-gray-900 hover:border-blue-400">
+                            <i class="fas fa-home fa-fw mr-3 text-blue-400"></i><span
+                                class="pb-1 md:pb-0 text-sm">Home</span>
+                        </a>
+                    </li>
+                    <li data-aos="fade-down" data-aos-once="true" class="mr-6 my-2 md:my-0">
+                        <a href="{% url 'task'%}"
+                            class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-100 border-b-2 border-gray-900  hover:border-pink-400">
+                            <i class="fas fa-tasks fa-fw mr-3 text-blue-400"></i><span class="pb-1 md:pb-0 text-sm">Tasks</span>
+                        </a>
+                    </li>
+                    <li data-aos="fade-left" data-aos-once="true" class="mr-6 my-2 md:my-0">
+                        <a href="{% url 'upload'%}"
+                            class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-100 border-b-2 border-gray-900  hover:border-green-400">
+                            <i class="fas fa-map fa-fw mr-3 text-blue-400"></i><span
+                                class="pb-1 md:pb-0 text-sm">Maps</span>
+                        </a>
+                    </li>
+                    <li data-aos="fade-right" data-aos-once="true" class="mr-6 my-2 md:my-0">
+                        <a href="{% url 'user' %}"
+                            class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-100 border-b-2 border-gray-900  hover:border-red-400">
+                            <i class="fa fa-user fa-fw mr-3 text-blue-400"></i><span class="pb-1 md:pb-0 text-sm">User View</span>
+                        </a>
+                    </li>
+                </ul>
+
+               
+
+            </div>
+
+        </div>
+    </nav>
+
+    <button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" class="inline-block p-3 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out bottom-5 right-5" id="btn-back-to-top">
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" class="w-4 h-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>
+    </button>
+    {% block content%}
+
+    {% endblock %}
+<script>
+// Get the button
+let mybutton = document.getElementById("btn-back-to-top");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (
+    document.body.scrollTop > 20 ||
+    document.documentElement.scrollTop > 20
+  ) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+// When the user clicks on the button, scroll to the top of the document
+mybutton.addEventListener("click", backToTop);
+
+function backToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+</script>
+
+
+    <footer class=" bg-gray-900 border-t border-gray-400 shadow">
+        <div class="max-w-lg mx-auto">
+            <div class="flex py-10 justify-center text-white items-center px-20 sm:px-36">
+                <div class="ml-10 relative">
+                    <h1 class="font-bold text-xl pr-5 relative z-50">ZaVin</h1>
+                    <svg class="w-11 h-11 absolute -top-2 -left-3 z-40" viewBox="0 0 79 79" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M35.9645 2.94975C37.9171 0.997129 41.0829 0.997127 43.0355 2.94975L76.0502 35.9645C78.0029 37.9171 78.0029 41.0829 76.0503 43.0355L43.0355 76.0502C41.0829 78.0029 37.9171 78.0029 35.9645 76.0503L2.94975 43.0355C0.997129 41.0829 0.997127 37.9171 2.94975 35.9645L35.9645 2.94975Z"
+                            stroke="#26C1F2" stroke-width="2" />
+                    </svg>
+                </div>
+                <span class="border-l border-gray-500 text-sm pl-5 py-2 font-semibold">Penyaji Data Terkait MSY</span>
+            </div>
+            <center>
+                <i class="ml-4 fas fa-moon text-blue-400 pr-3"></i>
+                <p class="text-gray-400">Author Social Media</p>
+            </center>
+            <div class="flex items-center text-gray-400 text-sm justify-center">
+                <a href="https://www.instagram.com/reza_fahrizal_barkah/" class="pr-3">Instagram</a>
+                <a href="https://www.twitter.com/nevin_adr" class="border-l border-gray-400 px-3">Twitter</a>
+                <a href="https://www.facebook.com/nevin.adel.1/" class="border-l border-gray-400 pl-3">Facebook</a>
+            </div>
+            <div class="text-center text-white">
+                <p class="my-3 text-gray-400 text-sm">&copy; 2022 Copyright UPI. </p>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"></script>
+
+</html>

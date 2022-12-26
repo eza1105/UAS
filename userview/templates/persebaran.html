@@ -1,0 +1,136 @@
+{% extends 'index.html'%}
+{% load static %}
+{% block content%}
+
+<div class="md:w-full relative h-11  mt-6">
+        <h1 class="font-semibold text-darken text-3xl text-center">
+            Peta Citra Potensi Persebaran Ikan
+        </h1>
+</div>
+<div class="flex">
+    <div class="md:w-6/12 relative   content-center ">
+       
+            <h1 class="font-semibold text-darken text-2xl text-center ">Persebaran Ikan Menggunakan<span
+                    class="text-yellow-500"><br> Klorofil-a / (Chl-a)</span></h1>
+        
+        <p class="text-justify text-gray-500 my-5 px-14">
+            Persebaran ikan yang didapat dengan menggunakan penggabungan citra 2-3 yang menghasilkan campuran warna yang masing masingnya memiliki tingkat kebaikan Klorofil di masing-masing wilayah. Semakin baik warna dari citranya, maka semakin baik zooplankton yang ada di wilayah tersebut, yang menandakan bahwa di wilayah tersebut terdapat potensi sebaran ikan yang baik. jika `d > 0` Klorofil-a semakin sedikit, maka ikan diprediksi semakin sedikit.
+        </p>
+    </div>
+    <div class="md:w-6/12 relative  content-center ">
+        
+            <h1 class="font-semibold text-darken text-2xl text-center">Persebaran Ikan Menggunakan<span
+                class="text-yellow-500"><br> Suhu Permukaan Air Laut</span></h1>
+       
+        <p class="text-justify text-gray-500 my-5 px-14">
+            Persebaaran ikan yang didapat dengan menggunakan penggabungan citra 10-11 dan NDVI dari citra 4-5 , yang menghasilkan kombinasi warna terkait suhu permukaan laut di wilayah tersebut. Wilayah dengan suhu yang masih stabil menandakan bahwa ada habitat ikan yang hidup di wilayah tersebut, dan ini bisa menjadi indikator potensi persebaran ikan yang ada di wilayah tersebut. jika `d > 0` suhu semakin dingin.
+        </p>
+    </div>
+
+</div>
+
+<div class="px-32" style="height:400px; "> <div id="map" class="border-8 border-cream"></div></div>
+
+<div class=" mt-10 text-center  capitalize md:w-full mb-10 text-gray-500">
+    <h1> download file layout</h1>
+    <a href="{% static 'legenda/' %}{{name}}"
+        class=" inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase  rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out"
+        download="{{name}}">Download</a>
+</div>
+<div class="flex justify-center mb-10 grid place-items-center ">
+    <div class="withd : 66% relative">
+        <ul class="list-decimal capitalize text-gray-500">
+            <li>Click download diatas !</li>
+            <li>setelah selesai, rubah file menjadi bentuk .zip atau .rar dengan menambahkan .zip/.rar </li>
+            <li>ekstrak file zip atau rar </li>
+            <li>lalu file dapat dibuka</li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- include your geojson file -->
+
+<script>
+
+    // create a map and set the view
+    var map = L.map('map').setView([-6.188697, 105.827727], 9);
+
+    // add a tile layer to the map
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // create a function to style the geojson data based on a property value
+    function getColor(d) {
+        return d == 5 ? '#ff69b4' :
+            d == 4 ? '#4E6C50' :
+                d == 3 ? ' #FF0000' :
+                    d == 2 ? '#A9AF7E' :
+                        d == 1 ? '#FCE700' : '#FCE700';
+    }
+    function style(feature) {
+        return {
+            weight: 0,
+            opacity: 0,
+            color: 'green',
+            dashArray: '3',
+            fillOpacity: 10,
+            fillColor: getColor(feature.properties.gridcode)
+        };
+    }
+
+    // add the geojson data to the map and style it using the function
+    var geojson1 = L.geoJSON(chlorophyll, { style: style });
+    var geojson2 = L.geoJSON(geojson, { style: style });
+    var group = L.layerGroup([geojson1, geojson2]);
+    group.addTo(map);
+    geojson1.addTo(map);
+    geojson2.removeFrom(map);
+
+
+    // create a base layer
+    var baseLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    // create the control layer
+    var control = L.control.layers(null, null, { collapsed: false });
+
+    // add the layers to the control layer
+    control.addOverlay(geojson1, 'chlorophyll');
+    control.addOverlay(geojson2, 'temperature');
+
+    // add the control layer to the map
+    control.addTo(map);
+
+    var control = L.control.layers(baseLayer, { 'Layer 1': geojson1, 'Layer 2': geojson2 }, { collapsed: false });
+    window.onload = function() {
+  // code that calls the L.control.legend function goes here
+
+
+    
+    /*Legend specific*/
+    var legend = L.control({ position: "bottomleft" });
+
+    legend.onAdd = function(map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>Legenda</h4>";
+   
+    div.innerHTML += '<i style="background: #ff69b4"></i><span>d = 1</span><br>';
+    div.innerHTML += '<i style="background: #4E6C50"></i><span>d = 2</span><br>';
+    div.innerHTML += '<i style="background: #FF0000"></i><span>d = 3 </span><br>';
+    div.innerHTML += '<i style="background: #A9AF7E"></i><span>d = 4</span><br>';
+    div.innerHTML += '<i style="background: #FCE700"></i><span>d = 5</span><br>';
+
+    return div;
+    };
+
+    legend.addTo(map);
+
+
+};
+</script>
+
+{% endblock %}

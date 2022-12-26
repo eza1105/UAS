@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+
+
+{% load static %}
+{% block content%}
+
+    <div class="bg-cream">
+        <div class=" bg-cream">
+            <div class="w-full px-8 text-center">
+                <h1 data-aos="fade-down" data-aos-once="true" class="my-4 text-xl font-bold leading-tight text-darken ">
+                    <span class="text-yellow-500">Apa Itu </span> Tabel MSY
+                </h1>
+                <p data-aos="fade-down" data-aos-once="true" data-aos-delay="300"
+                    class="leading-normal text-sm mb-8 mr-16 ml-16">MSY adalah singkatan dari Maximum Sustainable Yield,
+                    yang artinya adalah tangkapan maksimal di suatu wilayah. Di dalam halaman ini kami menyajikan data
+                    MSY yang sudah di olah dan disajikan dalam bentuk tabel yang berisi bagian bagian penting yang ada
+                    di dalam MSY.</p>
+            </div>
+        </div>
+
+<!-- Tabel -->
+<div class=" overflow-x-auto relative pb-32">
+    <center>
+        <table data-aos="fade-up"
+            class="w-4/5 text-sm text-left text-gray-500 dark:text-gray-400 mr-10 ml-10 rounded-full">
+            <thead class="shadow-xl text-xs text-gray-500 uppercase rounded-full floating">
+                <tr
+                    class="border-b bg-gray-800 boder-gray-900 text-sm text-white font-medium px-6 py-2 whitespace-nowrap">
+                    <th scope="col" class="py-3 px-6">Jenis Usaha</th>
+                    <th scope="col" class="py-3 px-6">Provinsi</th>
+                    <th scope="col" class="py-3 px-6">Jenis Ikan</th>
+                    <th scope="col" class="py-3 px-6">Tahun</th>
+                    <th scope="col" class="py-3 px-6">Trip</th>
+                    <th scope="col" class="py-3 px-6">Ton</th>
+                    <th scope="col" class="py-3 px-6">Catch Per Unit Effort</th>
+                    <th scope="col" class="py-3 px-6">Prediksi Ton</th>
+                </tr>
+            </thead>
+            <tbody class="shadow-xl ">
+                {% for obj in datamsy %}
+                <tr class=" text-black floating">
+                    <td class="py-4 px-6 ">{{obj.jenis_usaha}}</td>
+                    <td class="py-4 px-6">{{obj.provinsi}}</td>
+                    <td class="py-4 px-6">{{obj.jenis_ikan}}</td>
+                    <td class="py-4 px-6">{{obj.tahun}}</td>
+                    <td class="py-4 px-6">{{obj.trip}}</td>
+                    <td class="py-4 px-6">{{obj.ton}}</td>
+                    <td class="py-4 px-6">{{obj.CPUE}}</td>
+                    <td class="py-4 px-6">{{ obj.result }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+</div>
+</div>
+
+
+{% endblock %}

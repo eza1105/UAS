@@ -1,0 +1,249 @@
+{% extends 'index.html' %}
+
+
+{% load static %}
+{% block content%}
+
+<div class="md:flex mt-20 md:space-x-10 items-start">
+    <div data-aos="fade-up" class="ml-12 md:w-6/12 relative ">
+
+        <!--Graph Card-->
+        <div class=" floating-4 rounded shadow-2xl">
+            <div class="border-b border-gray-800 p-3">
+                <h5 class="text-center font-bold uppercase text-gray-600">Catch Of the Year</h5>
+            </div>
+            <div class="p-5">
+                <canvas id="COTY" class="chartjs" width="undefined" height="undefined"></canvas>
+            </div>
+
+        </div>
+        <!--/Graph Card-->
+        <div style="background: #33EFA0" class="w-32 h-32 rounded-full absolute z-0 left-4 -top-12 animate-pulse">
+        </div>
+        <div style="background: #33D9EF;" class="w-5 h-5 rounded-full absolute z-0 left-36 -top-14 animate-ping">
+        </div>
+
+        <div style="background: #5B61EB;" class="w-36 h-36 rounded-full absolute z-0 right-16 -bottom-1 animate-pulse">
+        </div>
+        <div style="background: #F56666;" class="w-5 h-5 rounded-full absolute z-0 right-52 bottom-1 animate-ping">
+        </div>
+    </div>
+    <div data-aos="fade-down" class= "md:w-5/12 mt-20 md:mt-0 text-gray-500">
+        <br><br><br><br>
+        <h1 class="text-2xl font-semibold text-darken lg:pr-40 text-yellow-500">Grafik Chart <span
+                class="text-indigo-900">Catch</span></h1>
+        <p class="text-gray-500 my-4 lg:pr-32">Grafik yang menjelaskan tentang penangkapan ikan yang di lakukan selama pertahun, yang dimulai dari 2011-2020. Data di sebelah kiri menjelaskan tentang banyaknya hasil tangkap yang diperoleh dalam satu tahun dan dalam bentuk ton.
+        </p>
+    </div>
+</div>
+
+<!-- Tools For Teachers And Learners -->
+<div class="flex justify-evenly flex-col md:flex-row items-center md:space-x-5 mt-16 ">
+    <div data-aos="fade-right" class="md:w-1/2 lg:pl-14">
+        <h1 class="text-darken font-semibold text-3xl lg:pr-56"><span class="text-yellow-500">Grafik CPUE</span><br>(Catch Per Unit Effort)</h1>
+        <p class="text-gray-500 my-4 lg:pr-32">Grafik garis yang menjelaskan tentang penangkapan ikan dalam sekali turun dalam kurun waktu satu tahun. Dapat dilihat disetiap data titik, ada nilai yang tersimpan disana.</p>
+    </div>
+
+    <div data-aos="fade-left" class="relative z-50 floating  w-full md:w-1/2 xl:w-1/3 p-10  ">
+        <!--Graph Card-->
+        <div class="bg-gray-900 border border-gray-900 rounded shadow-2xl">
+            <div class="border-b border-gray-800 p-3">
+                <h5 class="font-bold uppercase text-white">Catch Per Unit Effort (CPUE)</h5>
+            </div>
+            <div class="p-5">
+                <canvas id="CPUE" class="chartjs border-2 border-white" width="undefined" height="undefined"></canvas>
+            </div>
+        </div>
+        <!--/Graph Card-->
+    </div>
+</div>
+
+
+<!-- Assessments, Quizzes, Tests -->
+<div class="md:flex mt-20 md:space-x-10">
+    <div data-aos="fade-right" class=" ml-12 md:w-6/12 relative ">
+        <!--Graph Card-->
+        <div class="bg-gray-900 border border-gray-800  floating-4 rounded shadow-2xl">
+            <div class="border-b border-gray-800 p-3">
+                <h5 class="text-center font-bold uppercase text-gray-600">Maximum Sustainable Yield (MSY)</h5>
+            </div>
+            <div class="p-5">
+                <canvas id="MSY" class="chartjs" width="undefined" height="undefined"></canvas>
+            </div>
+        </div>
+        <!--/Graph Card-->
+    </div>
+    <div data-aos="fade-left" class=" mb-32 md:w-6/12 md:transform md:-translate-y-20">
+        <br><br><br>
+        <h1 class="font-semibold text-darken text-3xl lg:pr-64">Grafik Chart and Line <span class="text-yellow-500">Maximum Sustainable Yield </span> (MSY)</h1>
+        <p class="text-gray-500 my-5 lg:pr-52">Grafik ini menjelaskan tentang MSY pertahun yang dipadukan dengan data dari grafik Catch, yang menghasilkan MSY pertahun dalam bentuk nilai MSY akhir.</p>
+    </div>
+</div>
+
+
+<script>
+    new Chart(document.getElementById("MSY"), {
+        "type": "bar",
+        "data": {
+            "labels": [{% for msy in datamsy %}'{{ msy.trip }}',{% endfor %}],
+        "datasets": [{
+            "label": "Yield",
+            "data": [{% for msy in datamsy %} '{{ msy.ton }}', {% endfor %}],
+        "borderColor": "rgb(255, 99, 132)",
+        "backgroundColor": "rgba(255, 99, 132, 0.2)"
+                }, {
+            "label": "Predict Yield",
+            "data": [{% for result in results %}'{{ result }}', {% endfor %}],
+        "type": "line",
+        "fill": false,
+        "borderColor": "rgb(54, 162, 235)",
+        "backgroundColor": "rgb(54, 162, 235)"
+                  }]
+            },
+        "options": {
+        "scales": {
+            "yAxes": [{
+                "ticks": {
+                    "beginAtZero": true
+                }
+            }]
+        }
+    }
+        });
+</script>
+<script>
+    new Chart(document.getElementById("COTY"), {
+        "type": "bar",
+        "data": {
+            "labels": [{% for msy in datamsy %}'{{ msy.tahun }}', {% endfor %}],
+        "datasets": [{
+            "label": "Catch",
+            "data": [{% for msy in datamsy %}'{{ msy.ton }}', {% endfor %}],
+        "fill": false,
+        "backgroundColor": [{% for msy in datamsy %} "rgba(75, 192, 192, 0.2)", {% endfor %}],
+    "borderColor": [{% for msy in datamsy %}"rgb(54, 162, 235)", {% endfor %}],
+    "borderWidth": 1
+                }]
+            },
+    "options": {
+        "scales": {
+            "yAxes": [{
+                "ticks": {
+                    "beginAtZero": true
+                }
+            }]
+        }
+    }
+        });
+</script>
+
+<script>
+    new Chart(document.getElementById("CPUE"), {
+        "type": "line",
+        "data": {
+            "labels": [{% for msy in datamsy %}'{{ msy.trip }}',{% endfor %}],
+        "datasets": [{
+            "label": "CPUE",
+            "data": [{% for msy in datamsy %}'{{ msy.CPUE }}', {% endfor %}],
+        "fill": false,
+        "borderColor": "rgb(255,255,255)",
+        "lineTension": 0.1
+                }]
+            },
+        "options": {}
+        });
+</script>
+
+<script>
+    new Chart(document.getElementById("chartjs-7"), {
+        "type": "bar",
+        "data": {
+            "labels": [{% for msy in datamsy %}'{{ msy.trip }}',{% endfor %}],
+        "datasets": [{
+            "label": "Yield",
+            "data": [{% for msy in datamsy %} '{{ msy.ton }}', {% endfor %}],
+        "borderColor": "rgb(255, 99, 132)",
+        "backgroundColor": "rgba(255, 99, 132, 0.2)"
+        }, {
+            "label": "Predict Yield",
+            "data": [{% for result in results %}'{{ result }}', {% endfor %}],
+        "type": "line",
+        "fill": false,
+        "borderColor": "rgb(54, 162, 235)",
+        "backgroundColor": "rgb(54, 162, 235)"
+          }]
+    },
+        "options": {
+        "scales": {
+            "yAxes": [{
+                "ticks": {
+                    "beginAtZero": true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+
+<script>
+
+
+    /*Toggle dropdown list*/
+    /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
+
+    var userMenuDiv = document.getElementById("userMenu");
+    var userMenu = document.getElementById("userButton");
+
+    var navMenuDiv = document.getElementById("nav-content");
+    var navMenu = document.getElementById("nav-toggle");
+
+    document.onclick = check;
+
+    function check(e) {
+        var target = (e && e.target) || (event && event.srcElement);
+
+        //User Menu
+        if (!checkParent(target, userMenuDiv)) {
+            // click NOT on the menu
+            if (checkParent(target, userMenu)) {
+                // click on the link
+                if (userMenuDiv.classList.contains("invisible")) {
+                    userMenuDiv.classList.remove("invisible");
+                } else { userMenuDiv.classList.add("invisible"); }
+            } else {
+                // click both outside link and outside menu, hide menu
+                userMenuDiv.classList.add("invisible");
+            }
+        }
+
+        //Nav Menu
+        if (!checkParent(target, navMenuDiv)) {
+            // click NOT on the menu
+            if (checkParent(target, navMenu)) {
+                // click on the link
+                if (navMenuDiv.classList.contains("hidden")) {
+                    navMenuDiv.classList.remove("hidden");
+                } else { navMenuDiv.classList.add("hidden"); }
+            } else {
+                // click both outside link and outside menu, hide menu
+                navMenuDiv.classList.add("hidden");
+            }
+        }
+
+    }
+
+    function checkParent(t, elm) {
+        while (t.parentNode) {
+            if (t == elm) { return true; }
+            t = t.parentNode;
+        }
+        return false;
+    }
+
+
+</script>
+
+
+{% endblock %}

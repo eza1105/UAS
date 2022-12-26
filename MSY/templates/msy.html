@@ -1,0 +1,306 @@
+{% extends 'admin.html'%}
+{% load static %}
+{% block content%} 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!--Container-->
+<div class="container w-full mx-auto ">
+    
+    <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+        
+        <!--Console Content-->
+        
+        <div class="flex flex-wrap">
+            <div data-aos="fade-right" data-aos-once="true" class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Metric Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-white">Intercept value</h5>
+                            <h3 class="font-bold text-3xl text-gray-600">{{intercept}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <!--/Metric Card-->
+            </div>
+            <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Metric Card-->
+                <div data-aos="fade-up" data-aos-once="true" class="bg-gray-900 border border-gray-800 rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-white">Slope Value</h5>
+                            <h3 class="font-bold text-3xl text-gray-600">{{slope}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <!--/Metric Card-->
+            </div>
+            <div class="w-full md:w-full xl:w-1/3 p-3">
+                <!--Metric Card-->
+                <div data-aos="fade-left" data-aos-once="true" class="bg-gray-900 border border-gray-800 rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-1 text-center md:text-center">
+                            <h5 class="font-bold uppercase text-white">equations</h5>
+                            <h3 class="font-bold text-3xl text-gray-600">{{equation}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--Divider-->
+        <hr class="border-b-2 border-gray-600 my-8 mx-4">
+
+        <div class="flex flex-row flex-wrap flex-grow mt-2">
+
+            <div data-aos="fade-right" data-aos-once="true" class="w-full md:w-1/2 p-3">
+                <!--Graph Card-->
+                <div  class="bg-gray-900 border border-gray-800 rounded shadow">
+                    <div class="border-b border-gray-800 p-3">
+                        <h5 class="font-bold uppercase text-white">Maximum Sustainable Yield (MSY)</h5>
+                    </div>
+                    <div class="p-5">
+                        <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
+                        <script>
+                            new Chart(document.getElementById("chartjs-7"), {
+                                "type": "bar",
+                                "data": {
+                                    "labels": [{% for msy in datamsy %}'{{ msy.trip }}',{% endfor %}],
+                                    "datasets": [{
+                                        "label": "Yield",
+                                        "data": [{% for msy in datamsy %} '{{ msy.ton }}', {% endfor %}],
+                                        "borderColor": "rgb(255, 99, 132)",
+                                        "backgroundColor": "rgba(255, 99, 132, 0.2)"
+                                    }, {
+                                        "label": "Predict Yield",
+                                        "data": [{% for result in results %}'{{ result }}', {% endfor %}],
+                                        "type": "line",
+                                        "fill": false,
+                                        "borderColor": "rgb(54, 162, 235)",
+                                        "backgroundColor": "rgb(54, 162, 235)"
+                                      }]
+                                },
+                                "options": {
+                                    "scales": {
+                                        "yAxes": [{
+                                            "ticks": {
+                                                "beginAtZero": true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!--/Graph Card-->
+            </div>
+
+            <div data-aos="fade-left" data-aos-once="true"class="w-full md:w-1/2 p-3">
+                <!--Graph Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow">
+                    <div class="border-b border-gray-800 p-3">
+                        <h5 class="font-bold uppercase text-white">Catch Per Unit Effort (CPUE)</h5>
+                    </div>
+                    <div class="p-5">
+                        <canvas id="CPUE" class="chartjs" width="undefined" height="undefined"></canvas>
+                        <script>
+                            new Chart(document.getElementById("CPUE"), {
+                                "type": "line",
+                                "data": {
+                                    "labels": [{% for msy in datamsy %}'{{ msy.trip }}',{% endfor %}],
+                                    "datasets": [{
+                                        "label": "CPUE",
+                                        "data": [{% for msy in datamsy %}'{{ msy.CPUE }}', {% endfor %}],
+                                        "fill": false,
+                                        "borderColor": "rgb(75, 192, 192)",
+                                        "lineTension": 0.1
+                                    }]
+                                },
+                                "options": {
+                                    "animations": {
+                                        "tension": {
+                                            "duration": 1000,
+                                            "easing": 'linear',
+                                            "from": 1,
+                                            "to": 0,
+                                            "loop": true
+                                        }
+                                    }, "scales": {
+                                        " y": { // defining min and max so hiding the dataset does not change scale range
+                                        "min": 0,
+                                        "max": 100
+                                }
+                                }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!--/Graph Card-->
+            </div>
+
+            <div data-aos="fade-right" data-aos-once="true" class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Graph Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow">
+                    <div class="border-b border-gray-800 p-3">
+                        <h5 class="font-bold uppercase text-white">Catch Of the Year</h5>
+                    </div>
+                    <div class="p-5">
+                        <canvas id="chartjs-1" class="chartjs" width="undefined" height="undefined"></canvas>
+                        <script>
+                            new Chart(document.getElementById("chartjs-1"), {
+                                "type": "bar",
+                                "data": {
+                                    "labels": [{% for msy in datamsy %}'{{ msy.tahun }}', {% endfor %}],
+                                    "datasets": [{
+                                        "label": "Catch",
+                                        "data": [{% for msy in datamsy %}'{{ msy.ton }}', {% endfor %}],
+                                        "fill": false,
+                                        "backgroundColor": [ {% for msy in datamsy %} "rgba(75, 192, 192, 0.2)", {% endfor %}],
+                                        "borderColor": [ {% for msy in datamsy %}"rgb(54, 162, 235)",{% endfor %}],
+                                        "borderWidth": 1
+                                    }]
+                                },
+                                "options": {
+                                    "scales": {
+                                        "yAxes": [{
+                                            "ticks": {
+                                                "beginAtZero": true
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!--/Graph Card-->
+            </div>
+            <div data-aos="fade-left" data-aos-once="true" class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Template Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow">
+                    <div class="border-b border-gray-800 p-3">
+                        <h5 class="font-bold uppercase text-gray-600">Template</h5>
+                    </div>
+                    <div class="p-5">
+         
+                    </div>
+                </div>
+                <!--/Template Card-->
+            </div>
+
+
+        </div>
+            <div class="w-full p-3">
+                <!--Table Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow">
+                    <div class="border-b border-gray-800 p-3">
+                        <h5 class="font-bold uppercase text-white">TABLE HASIL TANGKAPAN IKAN </h5>
+                    </div>
+                    <div class="p-5">
+                        <table data-aos="fade-up"  class="font-bold uppercase text-white text-center w-full p-5 text-white ">
+                            <thead class="border  border-2 border-gray-800 ">
+                                <tr class="[&>*]:py-4">
+                                    <th data-aos="fade-up" >Jenis Usaha</th>
+                                    <th data-aos="fade-down" >Provinsi</th>
+                                    <th data-aos="fade-right">Jenis Ikan</th>
+                                    <th data-aos="fade-left">Tahun</th>
+                                    <th data-aos="fade-up">Trip</th>
+                                    <th data-aos="fade-down">Ton</th>
+                                    <th data-aos="fade-right">CPUE</th>
+                                    <th data-aos="fade-left">Prediksi Ton</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                              {% for obj in datamsy %}
+                                <tr>
+                                    <td data-aos="fade-up"    >{{obj.jenis_usaha}}</td>
+                                    <td data-aos="fade-down"  >{{obj.provinsi}}</td>
+                                    <td data-aos="fade-right" >{{obj.jenis_ikan}}</td>
+                                    <td data-aos="fade-left"  >{{obj.tahun}}</td>
+                                    <td data-aos="fade-up"    >{{obj.trip}}</td>
+                                    <td data-aos="fade-down"  >{{obj.ton}}</td>
+                                    <td data-aos="fade-right"  >{{obj.CPUE}}</td>
+                                    <td data-aos="fade-up"  >{{ obj.result }}</td>
+                                    
+                                  </tr>
+                              {% endfor %}
+                                </tbody>
+                        </table>
+
+                        <p class="py-2"><a href="{% url 'task'%}" class="text-white inline-block px-6 py-2 border-2 border-gray-800 font-medium text-xs leading-tight uppercase rounded-full hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out">See More issues...</a></p>
+                    </div>
+                </div>
+                <!--/table Card-->
+            </div>
+
+                            
+        <!--/ Console Content-->
+                
+    </div>
+    
+
+</div> 
+
+
+<script>
+
+
+
+var userMenuDiv = document.getElementById("userMenu");
+var userMenu = document.getElementById("userButton");
+
+var navMenuDiv = document.getElementById("nav-content");
+var navMenu = document.getElementById("nav-toggle");
+
+document.onclick = check;
+
+function check(e){
+  var target = (e && e.target) || (event && event.srcElement);
+
+  //User Menu
+  if (!checkParent(target, userMenuDiv)) {
+    // click NOT on the menu
+    if (checkParent(target, userMenu)) {
+      // click on the link
+      if (userMenuDiv.classList.contains("invisible")) {
+        userMenuDiv.classList.remove("invisible");
+      } else {userMenuDiv.classList.add("invisible");}
+    } else {
+      // click both outside link and outside menu, hide menu
+      userMenuDiv.classList.add("invisible");
+    }
+  }
+  
+  //Nav Menu
+  if (!checkParent(target, navMenuDiv)) {
+    // click NOT on the menu
+    if (checkParent(target, navMenu)) {
+      // click on the link
+      if (navMenuDiv.classList.contains("hidden")) {
+        navMenuDiv.classList.remove("hidden");
+      } else {navMenuDiv.classList.add("hidden");}
+    } else {
+      // click both outside link and outside menu, hide menu
+      navMenuDiv.classList.add("hidden");
+    }
+  }
+  
+}
+
+function checkParent(t, elm) {
+  while(t.parentNode) {
+    if( t == elm ) {return true;}
+    t = t.parentNode;
+  }
+  return false;
+}
+
+
+</script>
+
+
+{% endblock %}
